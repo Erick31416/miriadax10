@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var methodOverride = require('method-override');
 app.use(methodOverride('_method'));
-
+app.use(methodOverride('_method', { methods: ['POST','GET']}));
 
    // MODEL
 
@@ -58,9 +58,9 @@ const index = (quizzes) => `<!-- HTML view -->
     (ac, quiz) => ac += 
 `       <a href="/quizzes/${quiz.id}/play">${quiz.question}</a>
         <a href="/quizzes/${quiz.id}/edit"><button>Edit</button></a>
-        <a href="/quizzes/${quiz.id}?_method=DELETE"
-           onClick="return confirm('Delete: ${quiz.question}')">
-           <button>Delete</button></a>
+        <form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
+          <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
+        </form>
         <br>\n`, 
     ""
 )
@@ -69,9 +69,29 @@ const index = (quizzes) => `<!-- HTML view -->
     </body>
 </html>`;
 
+const alert = (quizzes) =>  `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>mi documento</title>
+</head>
+<body>
+    mi documento ${quizzes};
+</body>
+</html>` 
+
 const play = (id, question, response) => `<!-- HTML view -->
 <html>
-    <head><title>MVC Example</title><meta charset="utf-8"></head> 
+    <head>
+        <title>MVC Example</title>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script>
+        <script type="text/javascript">
+        
+        </script>
+    </head> 
     <body>
         <h1>MVC: Quizzes</h1>
         <form   method="get"   action="/quizzes/${id}/check">
@@ -150,7 +170,14 @@ const checkController = (req, res, next) => {
 
 //  GET /quizzes/1/edit
 const editController = (req, res, next) => {
-
+    
+    res.send(alert('hola'));
+    //var v = vs.findByPk(1);
+    quizzes.findByPk(1)
+    .then( quiziz => {
+        console.log(quiziz.answer);
+    })
+    .catch((error) => `Quiz not created:\n${error}`);
      // .... introducir código
 };
 
@@ -178,8 +205,14 @@ const createController = (req, res, next) => {
 
 // DELETE /quizzes/1
 const destroyController = (req, res, next) => {
-
-     // .... introducir código
+    let id = Number(req.params.id);
+    quizzes.destroy({where:{id}})
+        .then(
+            (quiz) => res.redirect('/quizzes')
+        )
+        .catch(i => {
+            console.log('error');
+        })
  };
 
 
@@ -195,6 +228,9 @@ app.post('/quizzes',          createController);
     // ..... instalar los MWs asociados a
     //   GET  /quizzes/:id/edit,   PUT  /quizzes/:id y  DELETE  /quizzes/:id
 
+app.get('/quizzes/:id/edit',   editController);
+app.delete('/quizzes/:id', destroyController);
+app.get('/quizzes/:id/update', editController);
 
 app.all('*', (req, res) =>
     res.send("Error: resource not found or method not supported")
