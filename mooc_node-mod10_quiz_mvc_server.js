@@ -51,21 +51,43 @@ sequelize.sync() // Syncronize DB and seed if needed
 
 const index = (quizzes) => `<!-- HTML view -->
 <html>
-    <head><title>MVC Example</title><meta charset="utf-8"></head> 
+    <head><title>MVC Example</title><meta charset="utf-8">
+    <style>
+        form {
+            margin-block-end: 0;
+        }
+        body {
+            background: powderblue;
+        }
+        .centrado {
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    </head> 
     <body> 
-        <h1>MVC: Quizzes</h1>`
+    <table class = 'centrado' >
+        <caption><h1>MVC: Quizzes</h1></caption>`
+
 + quizzes.reduce(
     (ac, quiz) => ac += 
-`       <a href="/quizzes/${quiz.id}/play">${quiz.question}</a>
-        <a href="/quizzes/${quiz.id}/edit"><button>Edit</button></a>
-        <form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
-          <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
-        </form>
-        <br>\n`, 
-    ""
-)
-+ `     <p/>
-        <a href="/quizzes/new"><button>New Quiz</button></a>
+`       <tr>
+            <td><a href="/quizzes/${quiz.id}/play">${quiz.question}</a></td>
+            <td><a href="/quizzes/${quiz.id}/edit"><button>Edit</button></a></td>
+            <td><form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
+            <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
+            </form></td>
+            <br>\n
+        </tr>`,""
+    )
++ `
+        <tr>
+            <td>
+            <div class = 'centrado' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
+            </td>
+        </tr>
+    </table>
+    
     </body>
 </html>`;
 
@@ -85,19 +107,32 @@ const play = (id, question, response) => `<!-- HTML view -->
                         url:'/quizzes/${id}/playAjax/'+$('#respuestaUser').val(),
                         success: function(isRight){
                             if (isRight === 'true'){
-                                $('#divCorrecto').show(1000);
-                                $('#divInCorrecto').hide(1000);
+                                $('#divCorrecto').show(10);
+                                $('#divInCorrecto').hide(10);
                             }else{
-                                $('#divInCorrecto').show(1000);
-                                $('#divCorrecto').hide(1000);
+                                $('#divInCorrecto').show(10);
+                                $('#divCorrecto').hide(10);
                             }
                         }
                     });
                 })
             });
         </script>
+        <style>
+        form {
+            margin-block-end: 0;
+        }
+        body {
+            background: powderblue;
+        }
+        .centrado {
+            margin: auto;
+            text-align: center;
+        }
+    </style>
     </head>
     <body>
+        <div  class = 'centrado' >
         <h1>MVC: Quizzes</h1>
         
             ${question}: <p>
@@ -108,13 +143,29 @@ const play = (id, question, response) => `<!-- HTML view -->
 
         </p>
         <a href="/quizzes"><button>Go back</button></a>
+        </div>
     </body>
 </html>`;
 
 const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
 <html>
-    <head><title>MVC Example</title><meta charset="utf-8"></head> 
+    <head><title>MVC Example</title><meta charset="utf-8">
+    <style>
+    form {
+        margin-block-end: 0;
+    }
+    body {
+        background: powderblue;
+    }
+    .centrado {
+        margin: auto;
+        text-align: center;
+        
+    }
+    </style>
+    </head> 
     <body>
+    <div  class = 'centrado' >
         <h1>MVC: Quizzes</h1>
         <form   method="${method}"   action="${action}">
             ${msg}: <p>
@@ -124,6 +175,7 @@ const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
         </form>
         </p>
         <a href="/quizzes"><button>Go back</button></a>
+        </div>
     </body>
 </html>`;
 
@@ -143,7 +195,7 @@ const playController = (req, res, next) => {
     let id = Number(req.params.id);
     let response = req.query.response || "";
 
-    quizzes.findById(id)
+    quizzes.findByPk(id)
     .then((quiz) => res.send(play(id, quiz.question, response)))
     .catch((error) => `A DB Error has occurred:\n${error}`);
  };
@@ -153,7 +205,7 @@ const checkController = (req, res, next) => {
     let response = req.query.response, msg;
     let id = Number(req.params.id);
 
-    quizzes.findById(id)
+    quizzes.findByPk(id)
     .then((quiz) => {
         msg = (quiz.answer===response) ?
               `Yes, "${response}" is the ${quiz.question}` 
