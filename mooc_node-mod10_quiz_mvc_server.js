@@ -69,50 +69,45 @@ const index = (quizzes) => `<!-- HTML view -->
     </body>
 </html>`;
 
-const alert = (quizzes) =>  `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>mi documento</title>
-</head>
-<body>
-    mi documento ${quizzes};
-</body>
-</html>` 
-
 const play = (id, question, response) => `<!-- HTML view -->
 <html>
     <head>
-        <title>MVC Example</title>
-        <meta charset="utf-8">
-        <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script>
+    <title>MVC Example</title>
+    <meta charset="utf-8">
+        <!-- <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
-        
+            $(function(){
+                $('#play').on('click',function(){
+                    $.ajax
+                    ({
+                        type:'POST',
+                        url:'/quizzes/${id}/playAjax/'+$('#respuestaUser').val(),
+                        success: function(isRight){
+                            if (isRight === 'true'){
+                                $('#divCorrecto').show(1000);
+                                $('#divInCorrecto').hide(1000);
+                            }else{
+                                $('#divInCorrecto').show(1000);
+                                $('#divCorrecto').hide(1000);
+                            }
+                        }
+                    });
+                })
+            });
         </script>
-    </head> 
+    </head>
     <body>
         <h1>MVC: Quizzes</h1>
-        <form   method="get"   action="/quizzes/${id}/check">
+        
             ${question}: <p>
-            <input type="text" name="response" value="${response}" placeholder="Answer" />
-            <input type="submit" value="Check"/> <br>
-        </form>
+            <input id = 'respuestaUser' type="text" name="response" value="${response}" placeholder="Answer" />
+            <button id = 'play' value="Check"> clki </button>
+            <div id = 'divCorrecto' style =' display : none' >Respuesta Corecta</div>
+            <div id = 'divInCorrecto' style =' display : none' >Respuesta Incorecta</div>
+
         </p>
         <a href="/quizzes"><button>Go back</button></a>
-    </body>
-</html>`;
-
-const check = (id, msg, response) => `<!-- HTML view -->
-<html>
-    <head><title>MVC Example</title><meta charset="utf-8"></head> 
-    <body>
-        <h1>MVC: Quizzes</h1>
-        <strong><div id="msg">${msg}</div></strong>
-        <p>
-        <a href="/quizzes"><button>Go back</button></a>
-        <a href="/quizzes/${id}/play?response=${response}"><button>Try again</button></a>
     </body>
 </html>`;
 
@@ -229,6 +224,20 @@ const destroyController = (req, res, next) => {
             console.log('error');
         })
  };
+ const playAjaxController = (req, res, next) => {
+    
+    //let response = req.query.response, msg;
+    let id = Number(req.params.id);
+    let response = (req.params.respuestaUser);
+    quizzes.findByPk(id)
+    .then((quiz) => {
+        msg = (quiz.answer===response) ?
+              'true'
+            : `false`;
+        return res.send(msg);
+    })
+    .catch((error) => `A DB Error has occurred:\n${error}`);
+};
 
 
 
@@ -246,6 +255,7 @@ app.post('/quizzes',          createController);
 app.get('/quizzes/:id/edit',   editController);
 app.delete('/quizzes/:id', destroyController);
 app.post('/quizzes/:id/update', updateController);
+app.post('/quizzes/:id/playAjax/:respuestaUser', playAjaxController);
 
 app.all('*', (req, res) =>
     res.send("Error: resource not found or method not supported")
