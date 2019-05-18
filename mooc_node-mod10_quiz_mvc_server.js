@@ -125,7 +125,7 @@ const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
             ${msg}: <p>
             <input  type="text"  name="question" value="${question}" placeholder="Question" />
             <input  type="text"  name="answer"   value="${answer}"   placeholder="Answer" />
-            <input  type="submit" value="Create"/> <br>
+            <input  type="submit" value="Aceptar"/> <br>
         </form>
         </p>
         <a href="/quizzes"><button>Go back</button></a>
@@ -171,11 +171,11 @@ const checkController = (req, res, next) => {
 //  GET /quizzes/1/edit
 const editController = (req, res, next) => {
     
-    res.send(alert('hola'));
-    //var v = vs.findByPk(1);
-    quizzes.findByPk(1)
+    let id = Number(req.params.id);
+    quizzes.findByPk(id)
     .then( quiziz => {
-        console.log(quiziz.answer);
+        //const quizForm =(msg, method, action, question, answer) 
+        res.send(quizForm("Edit Quiz", "post", `/quizzes/${id}/update`, quiziz.question, quiziz.answer));
     })
     .catch((error) => `Quiz not created:\n${error}`);
      // .... introducir código
@@ -184,7 +184,22 @@ const editController = (req, res, next) => {
 //  PUT /quizzes/1
 const updateController = (req, res, next) => {
 
-     // .... introducir código
+    let id = Number(req.params.id);
+    let {question, answer} = req.body;
+    quizzes.findByPk(id)
+        .then(
+            (quiz) => {
+                quiz.answer = answer;
+                quiz.question = question;
+                quiz.save()
+                .then(
+                    (quiz) => res.redirect('/quizzes')
+                )
+            }
+        )
+        .catch(i => {
+            console.log(i);
+        })
 };
 
 // GET /quizzes/new
@@ -230,7 +245,7 @@ app.post('/quizzes',          createController);
 
 app.get('/quizzes/:id/edit',   editController);
 app.delete('/quizzes/:id', destroyController);
-app.get('/quizzes/:id/update', editController);
+app.post('/quizzes/:id/update', updateController);
 
 app.all('*', (req, res) =>
     res.send("Error: resource not found or method not supported")
