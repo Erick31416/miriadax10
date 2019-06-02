@@ -1,6 +1,4 @@
-const {index} = require('./quizzeshtml');
-const {play} = require('./playhtml');
-const {quizForm} = require('./quizFormhtml');
+
 const express = require('express');
 const app = express();
 
@@ -51,9 +49,135 @@ sequelize.sync() // Syncronize DB and seed if needed
 
    // VIEWs
 
+const index = (quizzes) => `<!-- HTML view -->
+<html>
+    <head><title>MVC Example</title><meta charset="utf-8">
+    <style>
+        form {
+            margin-block-end: 0;
+        }
+        body {
+            background: powderblue;
+        }
+        .centrado {
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    </head> 
+    <body> 
+    <table class = 'centrado' >
+        <caption><h1>MVC: Quizzes</h1></caption>`
 
++ quizzes.reduce(
+    (ac, quiz) => ac += 
+`       <tr>
+            <td><a href="/quizzes/${quiz.id}/play">${quiz.question}</a></td>
+            <td><a href="/quizzes/${quiz.id}/edit"><button>Edit</button></a></td>
+            <td><form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
+            <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
+            </form></td>
+            <br>\n
+        </tr>`,""
+    )
++ `
+        <tr>
+            <td>
+            <div class = 'centrado' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
+            </td>
+        </tr>
+    </table>
+    
+    </body>
+</html>`;
 
+const play = (id, question, response) => `<!-- HTML view -->
+<html>
+    <head>
+    <title>MVC Example</title>
+    <meta charset="utf-8">
+        <!-- <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('#play').on('click',function(){
+                    $.ajax
+                    ({
+                        type:'POST',
+                        url:'/quizzes/${id}/playAjax/'+$('#respuestaUser').val(),
+                        success: function(isRight){
+                            if (isRight === 'true'){
+                                $('#divCorrecto').show(10);
+                                $('#divInCorrecto').hide(10);
+                            }else{
+                                $('#divInCorrecto').show(10);
+                                $('#divCorrecto').hide(10);
+                            }
+                        }
+                    });
+                })
+            });
+        </script>
+        <style>
+        form {
+            margin-block-end: 0;
+        }
+        body {
+            background: powderblue;
+        }
+        .centrado {
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    </head>
+    <body>
+        <div  class = 'centrado' >
+        <h1>MVC: Quizzes</h1>
+        
+            ${question}: <p>
+            <input id = 'respuestaUser' type="text" name="response" value="${response}" placeholder="Answer" />
+            <button id = 'play' value="Check"> clki </button>
+            <div id = 'divCorrecto' style =' display : none' >Respuesta Corecta</div>
+            <div id = 'divInCorrecto' style =' display : none' >Respuesta Incorecta</div>
 
+        </p>
+        <a href="/quizzes"><button>Go back</button></a>
+        </div>
+    </body>
+</html>`;
+
+const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
+<html>
+    <head><title>MVC Example</title><meta charset="utf-8">
+    <style>
+    form {
+        margin-block-end: 0;
+    }
+    body {
+        background: powderblue;
+    }
+    .centrado {
+        margin: auto;
+        text-align: center;
+        
+    }
+    </style>
+    </head> 
+    <body>
+    <div  class = 'centrado' >
+        <h1>MVC: Quizzes</h1>
+        <form   method="${method}"   action="${action}">
+            ${msg}: <p>
+            <input  type="text"  name="question" value="${question}" placeholder="Question" />
+            <input  type="text"  name="answer"   value="${answer}"   placeholder="Answer" />
+            <input  type="submit" value="Aceptar"/> <br>
+        </form>
+        </p>
+        <a href="/quizzes"><button>Go back</button></a>
+        </div>
+    </body>
+</html>`;
 
 
    // CONTROLLER
