@@ -6,23 +6,28 @@ const play = (id, question, response) => `<!-- HTML view -->
         <!-- <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
-            $(function(){
-                $('#play').on('click',function(){
-                    $.ajax
-                    ({
-                        type:'POST',
-                        url:'/quizzes/${id}/playAjax/'+$('#respuestaUser').val(),
-                        success: function(isRight){
-                            if (isRight === 'true'){
-                                $('#divCorrecto').show(10);
-                                $('#divInCorrecto').hide(10);
-                            }else{
-                                $('#divInCorrecto').show(10);
-                                $('#divCorrecto').hide(10);
-                            }
+
+            function comprobar (params) {
+                console.log('?');
+                $.ajax
+                ({
+                    type:'POST',
+                    url:'/quizzes/${id}/playAjax/'+$('#respuestaUser').val(),
+                    success: function(isRight){
+                        if (isRight === 'true'){
+                            $('#divCorrecto').show(10);
+                            $('#divInCorrecto').hide(10);
+                        }else{
+                            $('#divInCorrecto').show(10);
+                            $('#divCorrecto').hide(10);
                         }
-                    });
-                })
+                    }
+                });
+            }
+            $(function(){
+                $('#play').on('click', comprobar);
+
+                $('#respuestaUser').on('keypress', e => { if (e.charCode == 13 ){comprobar();}});
             });
         </script>
         <style>
@@ -43,7 +48,7 @@ const play = (id, question, response) => `<!-- HTML view -->
         <h1>MVC: Quizzes</h1>
         
             ${question}: <p>
-            <input id = 'respuestaUser' type="text" name="response" value="${response}" placeholder="Answer" />
+            <input autocomplete="off" id = 'respuestaUser' type="text" name="response" value="${response}" placeholder="Answer" />
             <button id = 'play' value="Check"> clki </button>
             <div id = 'divCorrecto' style =' display : none' >Respuesta Corecta</div>
             <div id = 'divInCorrecto' style =' display : none' >Respuesta Incorecta</div>

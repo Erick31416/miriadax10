@@ -48,14 +48,6 @@ sequelize.sync() // Syncronize DB and seed if needed
 })
 .catch( err => console.log(`   ${err}`));
 
-
-   // VIEWs
-
-
-
-
-
-
    // CONTROLLER
 
 // GET /, GET /quizzes
