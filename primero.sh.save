@@ -1,0 +1,3 @@
+#|/bin/bash
+echo Hola mundo
+git status > awk '/Panza		/ {print $0}' 
