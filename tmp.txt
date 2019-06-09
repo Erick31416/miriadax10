@@ -1,22 +1,9 @@
-En la rama ft/desarrollo
-Tu rama está adelantada a 'origin/ft/desarrollo' por 1 commit.
-  (usa "git push" para publicar tus commits locales)
-
+En la rama master
 Cambios no rastreados para el commit:
   (usa "git add <archivo>..." para actualizar lo que será confirmado)
   (usa "git checkout -- <archivo>..." para descartar los cambios en el directorio de trabajo)
 
-	modificado:     db.sqlite
-	modificado:     mooc_node-mod10_quiz_mvc_server.js
-	modificado:     playhtml.js
-
-Archivos sin seguimiento:
-  (usa "git add <archivo>..." para incluirlo a lo que se será confirmado)
-
-	awk
-	git
-	grep
-	primero.sh
-	tmp.txt
+	modificado:     primero.sh
+	modificado:     tmp.txt
 
 sin cambios agregados al commit (usa "git add" y/o "git commit -a")
