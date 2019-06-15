@@ -4,6 +4,8 @@ const {quizForm} = require('./quizFormhtml');
 const express = require('express');
 const app = express();
 
+const port = process.env.PORT || 3000;
+
    // Import MW for parsing POST params in BODY
 
 var bodyParser = require('body-parser');
@@ -184,5 +186,4 @@ app.all('*', (req, res) =>
 
    // Server started at port 8000
 
-app.listen(8000);
-
+app.listen(port);
