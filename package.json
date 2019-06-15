@@ -4,7 +4,7 @@
   "description": "mooc_node-mod10_quiz_mvc_server",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "node mooc_node-mod10_quiz_mvc_server.js",
     "checks": "node tests/launcher.js",
     "zip": "node tests/compress.js mooc_node-mod10_quiz_mvc_server"
   },
@@ -13,7 +13,7 @@
     "CORE",
     "QUIZ"
   ],
-  "author": "Santiago",
+  "author": "Ricardo",
   "license": "Unlicense",
   "dependencies": {
     "underscore": "^1.8.3",
