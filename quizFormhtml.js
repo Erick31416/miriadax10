@@ -11,7 +11,6 @@ const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
     .centrado {
         margin: auto;
         text-align: center;
-        
     }
     </style>
     </head> 

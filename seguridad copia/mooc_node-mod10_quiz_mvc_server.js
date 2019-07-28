@@ -74,20 +74,22 @@ const index = (quizzes) => `<!-- HTML view -->
 `       <tr>
             <td><a href="/quizzes/${quiz.id}/play">${quiz.question}</a></td>
             <td><a href="/quizzes/${quiz.id}/edit"><button>Edit</button></a></td>
-            <td><form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
-            <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
-            </form></td>
+            <td>
+                <form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
+                    <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
+                </form>
+            </td>
             <br>\n
         </tr>`,""
     )
 + `
         <tr>
             <td>
-            <div class = 'centrado' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
+                <div class = 'centrado' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
             </td>
         </tr>
     </table>
-    
+
     </body>
 </html>`;
 

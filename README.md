@@ -1,3 +1,22 @@
+**vamos a retomar el proyecto del quiz:**
+**¿donde esta el codigo? :**
+ /home/rick/10miradax/mooc_node-mod10_quiz_mvc_server
+
+**¿como me lo puedo bajar y actualizar?**
+**¿como funciona en local?**
+ejecuta 
+$ npm start
+o bien:
+$ node  node mooc_node-mod10_quiz_mvc_server
+despues en un navegador : http://localhost:3000/
+
+
+como modificarlo
+como subirlo a producion con herocu
+
+Readme posterior a 20190728 arriba
+Readme anterior a 20190728 abajo
+
 # Entrega mooc_node-mod10_quiz_mvc_server
 
 Puede descargar este programa

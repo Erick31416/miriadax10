@@ -1,24 +1,34 @@
 const index = (quizzes) => `<!-- HTML view -->
 
 <html>
-    <head><title>MVC Example</title><meta charset="utf-8">
-    <style>
-        form {
-            margin-block-end: 0;
-        }
-        body {
-            background: powderblue;
-        }
-        .centrado {
-            margin: auto;
-            text-align: center;
-        }
-    </style>
-    </head> 
-    <body> 
+    <head>
+        <title>MVC Example</title><meta charset="utf-8">
+        <style>
+            form {
+                margin-block-end: 0;
+            }
+            body {
+                background: powderblue;
+            }
+            .centrado {
+                margin-top: 10vh;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
     <table class = 'centrado' >
-        <caption><h1>MVC: Quizzes</h1></caption>`
-
+    <!-- 
+    <caption><h1>MVC: Quizzess</h1></caption>
+    -->
+    <tr>
+        <td>
+            <h1>MVC: Quizzess</h1>
+        </td>
+    </tr>
+    `
 + quizzes.reduce(
     (ac, quiz) => ac += 
 `       <tr>
@@ -27,7 +37,6 @@ const index = (quizzes) => `<!-- HTML view -->
             <td><form method="post" action="/quizzes/${quiz.id}?_method=DELETE">
             <input type="submit" onclick="return confirm('confirma si borrar ${quiz.question}?')" value="Delete"/>
             </form></td>
-            <br>\n
         </tr>`,""
     )
 + `
