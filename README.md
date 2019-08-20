@@ -1,18 +1,26 @@
 **vamos a retomar el proyecto del quiz:**
 **¿donde esta el codigo? :**
- /home/rick/10miradax/mooc_node-mod10_quiz_mvc_server
+    /home/rick/10miradax/mooc_node-mod10_quiz_mvc_server
 
 **¿como me lo puedo bajar y actualizar?**
 **¿como funciona en local?**
-ejecuta 
-$ npm start
-o bien:
-$ node  node mooc_node-mod10_quiz_mvc_server
-despues en un navegador : http://localhost:3000/
+    ejecuta 
+    $ npm start
+    o bien:
+    $ node  node mooc_node-mod10_quiz_mvc_server
+    despues en un navegador : http://localhost:3000/
+
+**como modificarlo**
+    Esta escrito con logica modelo-cliente-controlador
+
+**como subirlo a producion con herocu**
+    primero abria que subirlo a git,
+    la contraseña no es la del correo, es la de git, ojo, que hoy te has pasado un par de minutos intentandolo,
+    luego:
+    git push heroku master
+    *me ha hecho logearme, solo me ha pedido que ejecute : heroku login*
 
 
-como modificarlo
-como subirlo a producion con herocu
 
 Readme posterior a 20190728 arriba
 Readme anterior a 20190728 abajo

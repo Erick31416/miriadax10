@@ -1,13 +1,14 @@
-const {index} = require('./quizzeshtml');
-const {play} = require('./playhtml');
-const {quizForm} = require('./quizFormhtml');
+const {index} = require('./html/quizzeshtml');
+const {play} = require('./html/playhtml');
+const {quizForm} = require('./html/quizFormhtml');
 const express = require('express');
 const app = express();
 
 const port = process.env.PORT || 3000;
-//alkaparra ¿Qué hace la linea de arriba?
+//la linea de arriba equivale a :
+//if (process.env.PORT){port = process.env.PORT}else{port=process.env.Port}
 
-   // Import MW for parsing POST params in BODY
+// Import MW for parsing POST params in BODY
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,7 +19,9 @@ var methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 app.use(methodOverride('_method', { methods: ['POST','GET']}));
 
-   // MODEL
+//  ╭──────────────────────────╮
+//  │          MODEL           │
+//  ╰──────────────────────────╯
 
 const Sequelize = require('sequelize');
 
@@ -28,7 +31,9 @@ const sequelize = new Sequelize("sqlite:db.sqlite", options);
 const quizzes = sequelize.define(  // define table quizzes
     'quizzes',     
     {   question: Sequelize.STRING,
-        answer: Sequelize.STRING
+        answer: Sequelize.STRING,
+        //puntuacion: Sequelize.INTEGER,
+        //fecha: Sequelize.DATE
     }
 );
 
@@ -51,7 +56,22 @@ sequelize.sync() // Syncronize DB and seed if needed
 })
 .catch( err => console.log(`   ${err}`));
 
-   // CONTROLLER
+//  ╭──────────────────────────╮
+//  │       CONTROLLER         │
+//  ╰──────────────────────────╯
+//   indexController : coje todas las preguntas y crea la pagina de incio con ellas
+//   playController:
+//   checkController
+//   editController
+//   updateController
+//   newController
+//   createController
+//   deleteController
+//   playAjaxController
+//   verRespuestaAjaxController
+//   ¿que es req, res y next ? donde cojen valor.
+//   lee esto : https://expressjs.com/es/guide/using-middleware.html
+
 
 // GET /, GET /quizzes
 const indexController = (req, res, next) => {
@@ -65,10 +85,19 @@ const indexController = (req, res, next) => {
 const playController = (req, res, next) => {
     let id = Number(req.params.id);
     let response = req.query.response || "";
+    console.log('response: ',response);
 
+    quizzes.findAll({order: sequelize.random()})
+    .then((quizes) => {
+        nextId = quizes[0].id;
+        console.log(nextId);
+    })
     quizzes.findByPk(id)
-    .then((quiz) => res.send(play(id, quiz.question, response)))
+    .then((quiz) => {
+        res.send(play(id, quiz.question, response,nextId))
+    })
     .catch((error) => `A DB Error has occurred:\n${error}`);
+
  };
 
 //  GET  /quizzes/1/check
@@ -161,8 +190,17 @@ const deleteController = (req, res, next) => {
     })
     .catch((error) => `A DB Error has occurred:\n${error}`);
 };
-
-
+const verRespuestaAjaxController = (req, res, next) => {
+    
+    //let response = req.query.response, msg;
+    let id = Number(req.params.id);
+    let response = (req.params.respuestaUser);
+    quizzes.findByPk(id)
+    .then((quiz) => {
+        return res.send(quiz.answer);
+    })
+    .catch((error) => `A DB Error has occurred:\n${error}`);
+};
 
    // ROUTER
 
@@ -179,11 +217,11 @@ app.get('/quizzes/:id/edit',   editController);
 app.delete('/quizzes/:id', deleteController);
 app.post('/quizzes/:id/update', updateController);
 app.post('/quizzes/:id/playAjax/:respuestaUser', playAjaxController);
+app.post('/quizzes/:id/verRespuesta', verRespuestaAjaxController);
 
 app.all('*', (req, res) =>
     res.send("Error: resource not found or method not supported")
 );        
-
 
    // Server started at port 8000
 

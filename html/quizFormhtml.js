@@ -24,7 +24,7 @@ const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
             <input  type="submit" value="Aceptar"/> <br>
         </form>
         </p>
-        <a href="/quizzes"><button>Go back</button></a>
+        <a href="/quizzes"><button>Indice </button></a>
         </div>
     </body>
 </html>`;
