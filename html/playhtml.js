@@ -23,7 +23,7 @@ const play = (id, question, response) => `<!-- HTML view -->
                     }
                 });
             }
-            function comprobar (params) {
+            function verRespuesta (params) {
                 $.ajax
                 ({
                     type:'POST',
@@ -36,7 +36,7 @@ const play = (id, question, response) => `<!-- HTML view -->
             $(function(){
                 $('#play').on('click', comprobar);
                 $('#respuestaUser').on('keypress', e => { if (e.charCode == 13 ){comprobar();}});
-                $('#verRespuesta').on('click', comprobar);
+                $('#verRespuesta').on('click', verRespuesta);
             });
         </script>
         <style>
