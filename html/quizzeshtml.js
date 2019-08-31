@@ -2,7 +2,9 @@ const index = (quizzes) => `<!-- HTML view -->
 
 <html>
     <head>
-        <title>MVC Example</title><meta charset="utf-8">
+        <title>MVC Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
         <style>
             form {
                 margin-block-end: 0;

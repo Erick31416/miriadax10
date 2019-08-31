@@ -1,18 +1,21 @@
 const quizForm =(msg, method, action, question, answer) => `<!-- HTML view -->
 <html>
-    <head><title>MVC Example</title><meta charset="utf-8">
-    <style>
-    form {
-        margin-block-end: 0;
-    }
-    body {
-        background: powderblue;
-    }
-    .centrado {
-        margin: auto;
-        text-align: center;
-    }
-    </style>
+    <head>
+        <title>MVC Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <style>
+            form {
+                margin-block-end: 0;
+            }
+            body {
+                background: powderblue;
+            }
+            .centrado {
+                margin: auto;
+                text-align: center;
+            }
+        </style>
     </head> 
     <body>
     <div  class = 'centrado' >

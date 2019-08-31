@@ -3,9 +3,13 @@ const play = (id, question, response) => `<!-- HTML view -->
     <head>
     <title>MVC Example</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
         <!-- <script type="text/javascript" src="jquery-2.1.4.min.js.js" > </script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
+            $( document ).ready(function() {
+                $('#respuestaUser').focus();
+            });
 
             function comprobar (params) {
                 $.ajax
