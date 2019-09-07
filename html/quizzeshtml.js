@@ -30,6 +30,11 @@ const index = (quizzes) => `<!-- HTML view -->
             <h1>MVC: Quizzess</h1>
         </td>
     </tr>
+    <tr>
+        <td>
+            <div class = '' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
+        </td>
+    </tr>
     `
 + quizzes.reduce(
     (ac, quiz) => ac += 
@@ -42,11 +47,7 @@ const index = (quizzes) => `<!-- HTML view -->
         </tr>`,""
     )
 + `
-        <tr>
-            <td>
-            <div class = 'centrado' ><a href="/quizzes/new"><button>New Quiz</button></a></div>
-            </td>
-        </tr>
+
     </table>
     
     </body>
